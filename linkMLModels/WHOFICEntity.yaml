@@ -1,0 +1,116 @@
+id: https://who.int/whofic/foundation
+name: WhO-FIC Foundation
+description: |-
+  WHO-FIC Foundation for core WHO-FIC classifications
+license: https://creativecommons.org/publicdomain/zero/1.0/
+default_curi_maps:
+  - semweb_context
+imports:
+  - linkml:types
+  - ../contentmodel
+prefixes:
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  owl: http://www.w3.org/2002/07/owl#
+  rdfs: http://www.w3.org/2000/01/rdf-schema#
+  xsd: http://www.w3.org/2001/XMLSchema#
+  sh: http://www.w3.org/ns/shacl#
+  icd: http://who.int/icd#
+  schema: http://schema.org/
+  linkml: https://w3id.org/linkml/
+
+default_prefix: icd
+default_range: string
+
+emit_prefixes:
+  - rdf
+  - rdfs
+  - xsd
+  - skos
+  - icd
+
+classes:
+
+  ClassificationEntity:
+    mixins: DefinitionSection, TermSection, LinearizationSection
+    description: >-
+      The basic unit of classification in WHO-FIC, including classification categories and extension codes
+
+  ICDEntity:
+    is_a: ClassificationEntity
+    description >-
+      Top-level ICD entity class 
+    slots:
+
+  ICDCategory:
+    is_a: ICDEntity
+    description >-
+      Top-level ICD category class, subdivided into clinical and external categories because each has different schemas
+    slots:
+    
+  ICDClinicalCategory:
+    is-a: ICDCategory
+    mixins: 
+      - TreatmentSection
+      - FunctionalImpactSection
+      - SpecificConditionSection
+      - CausalMechanismAndRiskFactorsSection
+      - PostcoordinationSection
+      - ICD10NotesAndHintsSection
+      - SnomedReferenceSection
+      - DiagnosticCriteriaSection
+      - ClinicalDescriptionSection
+
+  ICDExternalCauseCategory
+    is-a: ICDC
+    mixins:
+      - ExternalCauseSection    
+
+  ICDExtensionCode:
+    is_a: ICDEntity
+    description: >-
+      Top-level ICD extension code class 
+    
+  ICFEntity:
+    is_a: ClassificationEntity
+    description: >-
+      Top-level ICF entity class 
+      
+  ICFCategory:
+    is_a: ICFEntity
+    description >-
+      Top-level ICF category class 
+    slots:
+
+  ICFQualifier:
+    is_a: ICFEntity
+    description: >-
+      Top-level ICF qualifier class 
+
+  ICHIEntity:
+    is_a: ClassificationEntity
+    description: >-
+      Top-level ICHI entity class 
+
+  ICHICategory:
+    is_a: ICHIEntity
+    description >-
+      Top-level ICHI category class 
+    slots:
+
+  Target:
+    is-a ICHICategory
+
+  Action:
+    is-a ICHICategory
+
+  Means:
+    is-a ICHICategory
+
+  HealthInterventions:
+    is-a ICHICategory
+    mixins: ICHIPostcoordinationSection
+
+  ICHIExtensionCode:
+    is_a: ICHIEntity
+    description: >-
+      Top-level ICHI extension code class 
